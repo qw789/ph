@@ -1,0 +1,25 @@
+//px转rem
+$browser-default-font-size: 75px !default;   //rem基准值
+@function px2rem($px){
+    @return $px / $browser-default-font-size * 1rem; 
+}
+// 字体
+@mixin font-dpr($font-size){ 
+    font-size: $font-size; 
+    [data-dpr="2"] & { 
+        font-size: $font-size * 2; 
+    } 
+    [data-dpr="3"] & { 
+        font-size: $font-size * 3; 
+    } 
+}
+
+//上下左右居中
+@mixin all-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
+}
+

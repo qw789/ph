@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        const sharedPropertyDefinition = {
+            enumerable: true,
+            configurable: true,
+            get: null,
+            set: null
+            }
+//重写set,get
+ function proxy (target, sourceKey,key) {
+    sharedPropertyDefinition.get = function proxyGetter () {
+        console.log(this)
+        return this[sourceKey][key]
+    }
+    sharedPropertyDefinition.set = function proxySetter (val) {
+        console.log(this)
+        this[sourceKey][key] = val
+    }
+    Object.defineProperty(target, key, sharedPropertyDefinition)
+}
+
+var a={_data:{child:2,father:33},cc:11}
+var keys=Object.keys(a._data);
+let i=keys.length;
+while(i--){
+    console.log(proxy(a,"_data",keys[i]))
+}
+
+    </script>
+</body>
+</html>

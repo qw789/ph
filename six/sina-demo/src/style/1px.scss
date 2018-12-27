@@ -1,0 +1,40 @@
+$borderColor: #eee;
+@mixin setLine($c: #fff, $top: 1px, $right: 1px, $bottom: 1px, $left: 1px) {
+  content: " ";
+  pointer-events: none;
+  box-sizing: border-box;
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  left: 0;
+  top: 0;
+  // border:1px solid #999;
+  border-top: $top solid $c;
+  border-right: $right solid $c;
+  border-bottom: $bottom solid $c;
+  border-left: $left solid $c;
+
+  color: $c;
+  transform-origin: left top;
+  transform: scale(0.5);
+}
+.bd-1px {
+  position: relative;
+  border: none;
+}
+
+.bd-1px-a:after {
+  @include setLine($borderColor);
+}
+.bd-1px-t:after {
+  @include setLine($borderColor, 1px, 0, 0, 0);
+}
+.bd-1px-r:after {
+  @include setLine($borderColor, 0, 1px,0, 0);
+}
+.bd-1px-b:after {
+  @include setLine($borderColor, 0, 0, 1px, 0);
+}
+.bd-1px-l:after {
+  @include setLine($borderColor, 0, 0, 0, 1px);
+}

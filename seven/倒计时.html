@@ -1,0 +1,43 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>jquery 倒计时</title>
+</head>
+ 
+<body>
+ 
+	<div class="time">
+        <span id="t_h">00时</span><b>:</b><span id="t_m">00分</span><b>:</b><span id="t_s">00秒</span>
+     </div>
+	
+	<script type="text/javascript">
+	
+	//封装id
+    function $(id){
+      return document.getElementById(id);
+    }
+   function GetRTime(){
+       //结束时间
+       var EndTime= new Date('2018/07/20 00:00:00');
+       //当前时间
+       var NowTime = new Date();
+       //结束时间减去当前时间剩余的毫秒数
+       var t =EndTime.getTime() - NowTime.getTime();
+       var h=Math.floor(t/1000/60/60);//时
+       var m=Math.floor(t/1000/60%60);//分
+       var s=Math.floor(t/1000%60);//秒
+       h <10 ? h = '0' +h :h =h;//判断是否小于10，是则在时间前面加0
+       m <10 ? m = '0' +m :m =m;
+       s <10 ? s = '0' +s :s =s;
+       $("t_h").innerHTML = h + "时";
+       $("t_m").innerHTML = m + "分";
+       $("t_s").innerHTML = s + "秒";
+   }
+   setInterval(GetRTime,0);
+	
+	</script>
+	
+</body>
+</html>

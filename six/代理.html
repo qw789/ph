@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <ul class="toolbar">
+        <li class="item">1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+    </ul>
+    <script>
+        // var toolbar = document.querySelector(".toolbar");
+        // toolbar.addEventListener("click", function (e) {
+        //     var button = e.target;
+        //     if (!button.classList.contains("active"))
+        //         button.classList.add("active");
+        //     else
+        //         button.classList.remove("active");
+        // });
+
+        function delegate(parent, selector, event, handle) {
+            var parents = document.querySelector("." + parent);
+            parents.addEventListener(event, handle)
+
+        }
+
+        function delegateEvent(interfaceEle, selector, type, fn) {
+            if (interfaceEle.addEventListener) {
+                interfaceEle.addEventListener(type, eventfn);
+            } else {
+                interfaceEle.attachEvent("on" + type, eventfn);
+            }
+
+            function eventfn(e) {
+                var e = e || window.event;
+                var target = e.target || e.srcElement;
+                if (matchSelector(target, selector)) {
+                    if (fn) {
+                        fn.call(target, e);
+                    }
+                }
+            }
+        }
+
+        function matchSelector(ele, selector) {
+            // if use id
+            if (selector.charAt(0) === "#") {
+                return ele.id === selector.slice(1);
+            }
+            // if use class
+            if (selector.charAt(0) === ".") {
+                console.log((" " + ele.className + " ").indexOf(" " + selector.slice(1) + " ") != -1)
+                return (" " + ele.className + " ").indexOf(" " + selector.slice(1) + " ") != -1;
+            }
+            // if use tagName
+            return ele.tagName.toLowerCase() === selector.toLowerCase();
+        }
+        //调用
+        var toolbar = document.querySelector(".toolbar");
+        delegateEvent(toolbar, ".item", "click", function () {
+            console.log(2222)
+        })
+
+
+
+        async function async1() {
+            console.log('async1 start')
+            await async2()
+            console.log('async1 end')
+        }
+        async function async2() {
+            console.log('async2')
+        }
+        console.log('script start')
+        setTimeout(function () {
+            console.log('setTimeout')
+        }, 0)
+        async1();
+        new Promise(function (resolve) {
+            console.log('promise1')
+            resolve();
+        }).then(function () {
+            console.log('promise2')
+        })
+        console.log('script end')
+    </script>
+</body>
+
+</html>

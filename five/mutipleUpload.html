@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Examples</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link href="" rel="stylesheet">
+    <style>
+        .show_container {
+            overflow: hidden;
+            padding: 0 2em;
+        }
+
+        .ul_image {
+            overflow: hidden;
+            zoom: 1;
+        }
+
+        .ul_image li {
+            float: left;
+            width: 60px;
+            height: 60px;
+            line-height: 57px;
+            text-align: center;
+            list-style: none;
+            margin: 1em 3em 2em 0;
+        }
+
+        .show_container div {
+            float: left;
+            position: relative;
+            width: 60px;
+            min-height: 60px;
+            /* margin: 0em 3em 2em 0; */
+        }
+
+        .showFirst {
+            border: 1px solid #ddd;
+        }
+
+        .ul_image li img {
+            max-width: 60px;
+            max-height: 60px;
+            vertical-align: middle;
+        }
+
+        .show_container .showFirst span {
+            position: absolute;
+            display: inline-block;
+            width: 18px;
+            border-radius: 18px;
+            text-align: center;
+            left: 50px;
+            top: -8px;
+            color: #fff;
+            background-color: #777d8b;
+        }
+
+        .ul_image li span {
+            line-height: 18px;
+        }
+
+        .ul_image li span {
+            line-height: 18px;
+        }
+
+        .uploadImg_bg {
+            display: inline-block;
+            background-image: url(upload_bg.png);
+            position: absolute;
+        }
+
+        .wh {
+            width: 60px;
+            height: 60px;
+        }
+
+        .show_container .showLast input {
+            opacity: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="show_container">
+        <ul class="ul_image">
+            <li class="up_img">
+                <div class="showFirst wh">
+                    <img src="test.png" id="up_1" />
+                    <span>&times;</span>
+                </div>
+            </li>
+            <li class="up_img">
+                <div class="showFirst wh">
+                    <img src="2.jpg" id="up_2" />
+                    <span>&times;</span>
+                </div>
+            </li>
+            <li>
+                <div class="showLast wh">
+                    <span class="uploadImg_bg wh"></span>
+                    <input type="file" class="wh" id="test" />
+                </div>
+            </li>
+        </ul>
+    </div>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script type="text/javascript">
+     $(function() {
+　　　//当上传的input的值发生变化即有上传的图片的时候，触发function
+    $(".showLast .wh").change(function() {
+        var id=$(".up_img").length+1;//我们为每一个上传的图片都动态的分配一个数字，作为组合id之用
+　　　　　//当上传一个图片的时候，我们将把这个图片动态的追加到上传按钮之前
+        var $str="<li class='up_img'>"+
+                    "<div class='showFirst wh'>"+
+                        "<img src='' id='up_"+
+                        id+
+                        "'>"+
+                        "<span>×</span>"+
+                    "</div>"+
+                "</li>";
+        $(".ul_image>li:last-child").before($str);
+        readURL(this);//这个方法可以得到图片的真实路径，需要注意的是，这个方法一定要放在change事件的最后，因为要保证动态的追加的li元素已经存在于页面中，然后才可以使用readURL
+    });
+　　//右上角删除按钮的功能实现
+    $(".showFirst span").on("click",function() {
+        $(this).parent().parent().remove();
+        if (!$(".ul_image div").hasClass("showFirst")) {
+            $(".ul_image").empty();
+        };
+    });
+});
+    function readURL(input) {//if和else是为了区分不同的浏览器
+        if (input.files && input.files[0]) {  
+            var reader = new FileReader();
+            reader.onload = function (e) {  
+                var len=$(".up_img").length;//得到当前li的数量，注意此时的li的数量中，已经存在新追加的li，每个li中存在一个img，我们将上传的图片的路径赋给新追加的img的src属性；同时，我们利用len来动态的为追加的元素中的img分配id
+                $('#up_'+len).removeAttr('src');//移除新追加的img的src（在我看来这个语句在上传多张图片中是可以删掉的，因为新追加的img的src本来就是空的，尊重前辈的成果，放在这里也无影响）  
+                $('#up_'+len).attr('src', e.target.result);//为新追加的元素中的img的src赋值 
+            };
+            reader.readAsDataURL(input.files[0]);  
+        }else{  var pic_url = getPath(input);
+            document.getElementById("up_1").style.filter="progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale',src='"+pic_url+"')";
+        }
+    } 
+    function getPath(obj){    
+      if(obj){    
+        if (window.navigator.userAgent.indexOf("MSIE")>=1){
+            obj.select();
+            obj.blur();
+            return document.selection.createRange().text;
+        }  
+      }    
+    }
+</script>
+        </body> 
+        </html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function createStore() {
+            let state;
+            let listeners = [];
+
+            function getState() {
+                return JSON.parse(JSON.stringify(state))
+            }
+
+            function dispatch(action) { // 分发
+                state = reducer(state, action); // 接收当前 State 和Action作为参数，返回一个新的 State
+                listeners.forEach(listener => listener()) // 一旦状态改变，触发所有的监听函数，这里需要优化，只有相关状态改变才需要触发
+            }
+
+            function subscribe(listener) { // 订阅，如果需监听状态变化，将监听函数传过来
+                listeners.push(listener); // 保存监听函数到监听数组
+                return function () { // 返回取消订阅的函数
+                    listeners = listeners.filter(item => item != listener); // 过滤监听函数
+                }
+            }
+
+            dispatch({
+                type: '@@INIT'
+            }); // 在创建仓库的时候，初始化state的值
+
+            return {
+                getState,
+                dispatch,
+                subscribe
+            }
+
+        }
+
+        /*这里是分割线，上面一部分是仓库定义，下面部分是使用方法*/
+        let initState = {
+            count: 0
+        }
+        //处理器，接收二个参数 ，接收老状态和action，返回新状态 
+        function reducer(state = initState, action) { // 如果state没有值，默认值为initState
+            //判断动作的类型
+            switch (action.type) {
+                case 'ADD_TODO':
+                    return { ...state,
+                        count: action.number
+                    }; //...state解构state所有属性，count: action.number覆盖前面的值
+                default:
+                    return state;
+            }
+        }
+        let store = createStore() // 创建一个仓库
+
+        let action = { // 定义一个action
+            type: 'ADD_TODO',
+            number:2
+        };
+
+        let unADD = store.subscribe(function () { // 监听状态改变
+            console.log('状态改变了，现在的state为：') // 状态改变了，现在的state为：
+            console.log(store.getState()) // { count: 1 }
+        })
+
+        store.dispatch(action); // 派发一个action，改变state的状态
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>scrollTop demo</title>
+  <style>
+  div.demo {
+    background: #ccc none repeat scroll 0 0;
+    border: 3px solid #666;
+    margin: 5px;
+    padding: 5px;
+    position: relative;
+    width: 200px;
+    height: 100px;
+    overflow: auto;
+  }
+  p {
+    margin: 10px;
+    padding: 5px;
+    border: 2px solid #666;
+    width: 1000px;
+    height: 1000px;
+  }
+  </style>
+</head>
+<body>
+ 
+ 
+<script>
+function pushInn(arr, splitVal, e) {
+    let i = 0
+        , max = arr.length - 1
+
+        ; (function setVar() {
+            if (arr[i] == splitVal && i <= max) {
+                arr[i] = e
+            } else {
+                if (i < max) {
+                    i++
+                    setVar()
+                } else if (i == max) {
+                    arr.pop()
+                    arr.unshift(e)
+                }
+            }
+        })()
+}
+var ar = new Array(5).fill(2)
+console.log(ar)
+pushInn(ar, 3 , 'xx')
+console.log(ar)
+
+function showScore(score, icon) {
+        if (isNaN(score)) return ''
+        let maxNum, on, off, half, scoreInt, num, remainder
+
+        maxNum = 5
+        scoreInt = score|0
+        scoreInt = score|0
+        remainder = (score*100 - scoreInt*100) / 100        
+        remainder >= .8 ? num = scoreInt+1 : remainder <= .2 ? num = scoreInt : (num = scoreInt, half = 1)
+        on = new Array(num+1).join(icon[0])
+        off = new Array(maxNum - num+1 - (half?1:0)).join(icon[1])
+        return on + (half ? icon[2] : '') + off
+    }
+    console.log('%c' +showScore(1.4, ['<星星>', '<无星>', '<半星>']), 
+'color: #fff; background: #000; font-size: 30px; line-height: 4em; padding: 1em; letter-spacing: .5em;')
+var observer={
+  add:function(){
+
+  },
+  pub:function(){
+    
+  }
+}
+</script>
+ 
+</body>
+</html>

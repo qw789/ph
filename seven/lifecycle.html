@@ -1,0 +1,53 @@
+<html>
+
+<head>
+  <title>test</title>
+</head>
+
+<body>
+  <div id="app">
+    <span>{{c}}</span>
+    <span>{{d}}</span>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        pgid : 1
+      },
+      computed: {
+        c: function () {
+          if (!this.pgid) {
+            return ;
+          }
+          console.log('c computed ' + this.pgid);
+          return ++this.pgid;
+        },
+        d: function () {
+          if (!this.c) {
+            return ;
+          }
+          console.log('d computed ' + this.c);
+          return ++this.c;
+        }
+      },
+      created: function () {
+         // 模拟c的请求，这里我不知道这个请求返回需要多少秒，假设1s
+        setTimeout(() => {   
+          console.log('time out');
+          this.pgid = 100;
+        }, 1000);
+        this.$nextTick(() => {
+          console.log('next tick');
+          this.pgid = 10;
+        })
+        console.log('created');
+      },
+      mounted: function () {
+        console.log('mounted');
+      }
+    });
+  </script>
+</body>
+</html>

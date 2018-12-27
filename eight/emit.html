@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        'use strict'
+        class EmitterEvent {
+            constructor() {
+                //构造器。实例上创建一个事件池
+                this._event = {};
+            }
+            //on 订阅
+            on(eventName, handler) {
+                // 根据eventName，事件池有对应的事件数组，
+                // 严谨一点应该判断handler的类型，是不是function
+                if (this._event[eventName]) {
+                    this._event[eventName].push(handler);
+                } else {
+                    this._event[eventName] = [handler];
+                }
+            }
+            emit(eventName) {
+                // 根据eventName找到对应数组
+                var events = this._event[eventName];
+                //  取一下传进来的参数，方便给执行的函数
+                var otherArgs = Array.prototype.slice.call(arguments, 1);
+                // var that = this;
+                console.log(this)
+                if (events) {
+                    events.forEach((event) => {
+                        event.apply(this, otherArgs);
+                    })
+                }
+            }
+            // 解除订阅
+            off(eventName, handler) {
+                var events = this._event[eventName];
+                if (events) {
+                    this._event[eventName] = events.filter((event) => {
+                        return event !== handler;
+                    })
+                }
+            }
+            // 订阅以后，emit 发布执行一次后自动解除订阅
+            once(eventName, handler) {
+                var that = this;
+
+                function func() {
+                    var args = Array.prototype.slice.call(arguments, 0);
+                    handler.apply(that, args);
+                    this.off(eventName, func);
+                }
+                //为什么还要on一次？直接调用func()可以吗？
+                this.on(eventName, func);
+            }
+        }
+
+        var event = new EmitterEvent();
+        function a(cc,dd) {
+            console.log(cc,dd, 'aa-aa');
+        }
+
+        // function b(something) {
+        //     console.log(something);
+        // }
+        event.on('dosomething', a);
+        event.emit('dosomething', 'chifan','hejiu');
+
+        //event.emit('dosomething');
+
+        // event.on('dosomething',a);
+        // event.on('dosomething',b);
+        // event.emit('dosomething','chifan');
+        // event.off('dosomething',a);
+        // setTimeout(() => {
+        //   event.emit('dosomething','hejiu');
+        // },2000)
+    </script>
+</body>
+
+</html>

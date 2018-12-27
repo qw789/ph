@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+//addObj一定要是纯对象，不是纯对象的话，还有这是深拷贝吗？？?
+        var copyObj=function(srcObj, addedObj) {
+        var srcType = typeof srcObj;
+        var addedType = typeof addedObj;
+        if (srcType =='object' && srcObj != null && !Array.isArray(srcObj)) {
+            // srcObj 为对象
+        } else {
+            console.log(1111)
+            srcObj = {};
+        }
+
+        if (addedType =='object' && addedObj != null && !Array.isArray(addedObj)) {
+            // addedObj 为对象
+        } else {
+            return srcObj;
+        }
+        console.log(222)
+        for (var i in addedObj) {
+            srcObj[i] = addedObj[i];
+        }
+        return srcObj;
+    }
+    var a=[1,3,5],
+    b={c:{d:1}}
+    var target=copyObj(a,b);
+    // b=[1,2]
+    target.c.d=2;
+    console.log(b)
+        </script>
+</body>
+</html>

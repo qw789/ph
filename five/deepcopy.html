@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function deepCopy(obj){
+            var objArray=Array.isArray(obj)?[]:{};
+            if(obj && typeof obj=="object"){
+                for(key in obj){
+                    if(obj.hasOwnProperty(key)){
+                        if(obj[key] && typeof obj[key]=="object"){
+                            objArray[key]=deepCopy(obj[key]);
+                        }else{
+                            objArray[key]=obj[key];
+                        }
+                    }
+                }
+            }
+            return objArray;
+        }
+        </script>
+</body>
+</html>

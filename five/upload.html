@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <title>Document</title>
+    <style>
+        .z {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 30px;
+            height: 142px;
+            line-height: 142px;
+        }
+
+        .z img {
+            width: 100%;
+        }
+
+        .zd {
+            display: none;
+        }
+
+        #con {
+            width: 200px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="con">
+        <div class="z">
+            <img id="zy_1" src="4.jpg" />
+        </div>
+        <input id="input" type="file" />
+    </div>
+    <script>
+        function readURL(input) {
+    if (input.files && input.files[0]) {  
+        var reader = new FileReader();
+        reader.onload = function (e) {  
+            $('#zy_1').removeAttr('src');  
+            $('#zy_1').attr('src', e.target.result); 
+        };
+        reader.readAsDataURL(input.files[0]);  
+    }else{ 
+        var pic_url = getPath(input);
+        document.getElementById("zy_1").style.filter="progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale',src='"+pic_url+"')";  
+    }
+} 
+function getPath(obj){    
+  if(obj){    
+    if (window.navigator.userAgent.indexOf("MSIE")>=1){
+        obj.select();
+        obj.blur();
+        return document.selection.createRange().text;
+    }  
+  }    
+} 
+$(function(){
+    $("#input").change(function(){
+        readURL(this);
+    });
+});
+    </script>
+</body>
+
+</html>

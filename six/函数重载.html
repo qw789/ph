@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function addMethod(obj,name,fn){
+            var ofn=obj[name];
+            obj[name]=function(){
+                console.log(fn.length)
+                if(fn.length==arguments.length){
+                    return fn.apply(this,arguments)
+                }else if(typeof ofn=="function"){
+                    return ofn.apply(this,arguments)
+                }
+            }
+        };
+        addMethod(app.user,"get",function(fn){
+            var u=null;
+            var sync=true;
+            if(app.user.has()){
+                u=app.user.get();
+                return typeof fn=="function" ? fn(u,sync) : u;
+            }
+            sync=false;
+            return app.page && app.page.getLogin(function(userdata){
+                fn(userdata,sync)
+            })
+        })
+        </script>
+</body>
+</html>

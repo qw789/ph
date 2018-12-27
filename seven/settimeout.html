@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="add">
+        jjjjjj
+    </div>
+    <script>
+        function add() {
+
+            var sum = 0;
+
+            for (var i = 0; i < 1000000000; i++) {
+
+                sum += i;
+
+            }
+            setTimeout(() => {
+                console.log("延时")
+            }, 2000);
+            return sum;
+
+        }
+        // function set(){
+        //     setTimeout(() => {
+        //         console.log("延时")
+        //     }, 2000);
+        // }
+        function test(func) {
+
+            var start = new Date().getTime(); //起始时间
+
+            func(); //执行待测函数
+
+            var end = new Date().getTime(); //接受时间
+
+            return (end - start) + "ms"; //返回函数执行需要时间
+
+        }
+        var time = test(add);
+
+        console.log(time);
+        document.querySelector("#add").addEventListener('click',()=>{
+            console.log(333)
+        })
+    </script>
+</body>
+
+</html>
